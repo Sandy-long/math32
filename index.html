@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比赛推理与排列组合</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .method {
+            background-color: #f1f9fe;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .method-title {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        .question {
+            font-weight: bold;
+            margin: 20px 0 10px;
+            color: #e74c3c;
+        }
+        .answer {
+            color: #27ae60;
+            margin-left: 20px;
+            padding-left: 10px;
+            border-left: 2px solid #2ecc71;
+        }
+        
+        /* 胜负平场次动画 */
+        .match-stats-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            animation: statPulse 2s infinite ease-in-out;
+        }
+        .win-stat {
+            background-color: #2ecc71;
+        }
+        .draw-stat {
+            background-color: #f1c40f;
+        }
+        .lose-stat {
+            background-color: #e74c3c;
+        }
+        .stat-count {
+            font-size: 24px;
+        }
+        .stat-label {
+            font-size: 12px;
+        }
+        @keyframes statPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* 连续自然数积分动画 */
+        .sequence-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .sequence-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3498db;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            animation: sequenceSlide 3s infinite;
+        }
+        .sequence-number:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .sequence-number:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .sequence-number:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .sequence-number:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .sequence-number:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+        @keyframes sequenceSlide {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* 传球问题动画 */
+        .passing-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .player-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #9b59b6;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        .pass-line {
+            position: absolute;
+            height: 2px;
+            background-color: #3498db;
+            transform-origin: left center;
+            animation: passLine 2s infinite;
+        }
+        @keyframes passLine {
+            0% { width: 0; opacity: 0; }
+            50% { width: 100px; opacity: 1; }
+            100% { width: 0; opacity: 0; }
+        }
+        
+        /* 染色问题动画 */
+        .coloring-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .region {
+            position: absolute;
+            border: 2px solid #34495e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            animation: colorChange 4s infinite;
+        }
+        .region-1 {
+            width: 80px;
+            height: 80px;
+            background-color: #e74c3c;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-150px);
+            animation-delay: 0s;
+        }
+        .region-2 {
+            width: 80px;
+            height: 80px;
+            background-color: #2ecc71;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50px);
+            animation-delay: 0.5s;
+        }
+        .region-3 {
+            width: 80px;
+            height: 80px;
+            background-color: #3498db;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-100px);
+            animation-delay: 1s;
+        }
+        @keyframes colorChange {
+            0% { background-color: #e74c3c; }
+            33% { background-color: #2ecc71; }
+            66% { background-color: #3498db; }
+            100% { background-color: #e74c3c; }
+        }
+    </style>
+</head>
+<body>
+    <h1>趣味数学32</h1>
+     <h2>比赛推理与排列组合</h2>
+    <div class="section">
+        <h3>1. 胜负平场次确定</h3>
+        
+        <div class="match-stats-animation">
+            <div class="stat-circle win-stat">
+                <div class="stat-count">3</div>
+                <div class="stat-label">胜</div>
+            </div>
+            <div class="stat-circle draw-stat">
+                <div class="stat-count">2</div>
+                <div class="stat-label">平</div>
+            </div>
+            <div class="stat-circle lose-stat">
+                <div class="stat-count">1</div>
+                <div class="stat-label">负</div>
+            </div>
+        </div>
+        
+        <div class="method">
+            <p><strong>运算法则：</strong></p>
+            <ul>
+                <li>根据已知胜平负场次，推断剩余队伍的比赛情况</li>
+                <li>结合总场次和积分核对合理性</li>
+            </ul>
+        </div>
+        
+        
+        <div class="question">某队比赛12场，积分是负场数的4倍，且平局数是负场数的2倍。求胜场数。</div>
+        <div class="answer">3</div>
+        
+        <div class="question">联赛还剩2轮，积分：A队68分，B队66分，C队64分。剩余对阵：A vs B，C vs 弱队。
+若A队夺冠，至少需要多少分？</div>
+        <div class="answer">A至少1平（69分），确保B最高68分（若B胜A则B 69分，A 68分，B夺冠）</div>
+		
+		
+		 <div class="question">联赛进行30轮后，A队积分f(n)=n²/10 + 2n（n=已赛场次）。
+若A队最后8轮期望每场得2.25分，能否打破联赛纪录（单季100分）？</div>
+        <div class="answer">剩余8轮预计+18分 → 总108分（可破纪录）</div>
+    </div>
+    
+    <div class="section">
+        <h3>2. 连续自然数积分</h3>
+        
+        <div class="sequence-animation">
+            <div class="sequence-number">7</div>
+            <div class="sequence-number">8</div>
+            <div class="sequence-number">9</div>
+        </div>
+        
+        <div class="method">
+            <p><strong>运算法则：</strong></p>
+            <ul>
+                <li>比赛结束后各队积分为连续自然数</li>
+                <li>推断特定队伍积分范围</li>
+            </ul>
+        </div>
+        
+        <div class="question">三队单循环赛（每两队比赛1次），积分分别为7、8、9分，是否可能？说明理由。</div>
+        <div class="answer">可能</div>
+        
+        <div class="question">n队联赛中，积分形成连续自然数时，最高分与最低分的差值是多少？举例说明n=4的情况。</div>
+        <div class="answer">差值为n-1，例如4队：
+可能序列3,4,5,6分（差值6-3=3）
+或0,1,2,3分（差值3-0=3）</div>
+        
+        <div class="question">4队双循环赛，要求：
+积分形成连续偶数（如4,6,8,10分）
+第二名对最后一名两战全平
+设计合理的胜负关系。</div>
+        <div class="answer">10分队：5胜1平（平第二名），
+8分队：2胜2平2负（平10分和4分队），
+6分队：1胜3平2负（两平8分队），
+4分队：3平3负</div>
+    </div>
+    <h2>计数与排列组合</h2>
+    <div class="section">
+        <h3>1. 传球问题</h3>
+        
+        <div class="passing-animation">
+            <div class="player-circle" style="top: 80px; left: 50%; transform: translateX(-100px);">A</div>
+            <div class="player-circle" style="top: 40px; left: 50%; transform: translateX(0px);">B</div>
+            <div class="player-circle" style="top: 120px; left: 50%; transform: translateX(0px);">C</div>
+            <div class="player-circle" style="top: 80px; left: 50%; transform: translateX(100px);">D</div>
+            <div class="pass-line" style="top: 80px; left: 50%; transform: translateX(-50px) rotate(18deg);"></div>
+            <div class="pass-line" style="top: 80px; left: 50%; transform: translateX(-50px) rotate(-18deg);"></div>
+        </div>
+        
+        <div class="method">
+            <p><strong>运算法则：</strong></p>
+            <ul>
+                <li>计算不同传球路径的可能性，考虑顺序和限制</li>
+                <li>若无限制，传球路径数按排列计算</li>
+            </ul>
+        </div>
+        
+        <div class="question">4人围成一圈，从A开始传球，经过B和C后传到D，有多少种不同的传球顺序？</div>
+        <div class="answer">2种（A→B→C→D 或 A→C→B→D）</div>
+        
+        <div class="question">5人围成一圈（A、B、C、D、E），从A出发：
+必须经过C
+不能直接传给E
+最后传回A，求路径数。</div>
+        <div class="answer">6种</div>
+        
+        <div class="question">5人传球（A-E），从A出发：
+必须经过B和C（顺序不限）
+D和E不能连续接球
+传5次后到E的路径数？</div>
+        <div class="answer">8种</div>
+    </div>
+    
+    <div class="section">
+        <h3>2. 染色问题</h3>
+        
+        <div class="coloring-animation">
+            <div class="region region-1">1</div>
+            <div class="region region-2">2</div>
+            <div class="region region-3">3</div>
+        </div>
+        
+        <div class="method">
+            <p><strong>运算法则：</strong></p>
+            <ul>
+                <li>给图形不同区域染色，邻接区域颜色不同</li>
+                <li>使用排列与组合原则</li>
+            </ul>
+        </div>
+        
+        <div class="question">三个区域排成一行，用红、绿、蓝三色染色，相邻区域颜色不同，有多少种染法？</div>
+        <div class="answer">6种</div>
+        
+        <div class="question">三个区域构成三角形（两两相邻），用三种颜色染色，相邻区域颜色不同，有多少种染法？</div>
+        <div class="answer">6种</div>
+        
+        <div class="question">六个区域构成正六边形（中心+外围五区），用四种颜色染色，相邻区域颜色不同，中心区域必须为红色，有多少种染法？</div>
+        <div class="answer">48种</div>
+    </div>
+</body>
+</html>
