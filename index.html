@@ -55,11 +55,44 @@
             margin: 20px 0 10px;
             color: #e74c3c;
         }
+        .answer-container {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 5px 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .answer-container:hover {
+            background: linear-gradient(135deg, #dcffe4 0%, #c6f6d5 100%);
+            transform: translateX(5px);
+        }
+        .answer-prompt {
+            color: #10b981;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .answer-prompt:before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
         .answer {
-            color: #27ae60;
+            color: #0f9d58;
             margin-left: 20px;
-            padding-left: 10px;
-            border-left: 2px solid #2ecc71;
+            padding: 10px 15px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            border-radius: 0 8px 8px 0;
+            display: none;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+        .show-answer .answer {
+            display: block;
         }
         
         /* 胜负平场次动画 */
@@ -144,12 +177,6 @@
         }
         .sequence-number:nth-child(3) {
             animation-delay: 0.4s;
-        }
-        .sequence-number:nth-child(4) {
-            animation-delay: 0.6s;
-        }
-        .sequence-number:nth-child(5) {
-            animation-delay: 0.8s;
         }
         @keyframes sequenceSlide {
             0%, 100% { transform: translateY(0); }
@@ -252,11 +279,17 @@
             66% { background-color: #3498db; }
             100% { background-color: #e74c3c; }
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
     <h1>趣味数学32</h1>
-     <h2>比赛推理与排列组合</h2>
+    <h2>比赛推理与排列组合</h2>
+    
     <div class="section">
         <h3>1. 胜负平场次确定</h3>
         
@@ -283,18 +316,25 @@
             </ul>
         </div>
         
-        
         <div class="question">某队比赛12场，积分是负场数的4倍，且平局数是负场数的2倍。求胜场数。</div>
-        <div class="answer">3</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">3</div>
+        </div>
         
         <div class="question">联赛还剩2轮，积分：A队68分，B队66分，C队64分。剩余对阵：A vs B，C vs 弱队。
 若A队夺冠，至少需要多少分？</div>
-        <div class="answer">A至少1平（69分），确保B最高68分（若B胜A则B 69分，A 68分，B夺冠）</div>
-		
-		
-		 <div class="question">联赛进行30轮后，A队积分f(n)=n²/10 + 2n（n=已赛场次）。
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">A至少1平（69分），确保B最高68分（若B胜A则B 69分，A 68分，B夺冠）</div>
+        </div>
+        
+        <div class="question">联赛进行30轮后，A队积分f(n)=n²/10 + 2n（n=已赛场次）。
 若A队最后8轮期望每场得2.25分，能否打破联赛纪录（单季100分）？</div>
-        <div class="answer">剩余8轮预计+18分 → 总108分（可破纪录）</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">剩余8轮预计+18分 → 总108分（可破纪录）</div>
+        </div>
     </div>
     
     <div class="section">
@@ -315,22 +355,32 @@
         </div>
         
         <div class="question">三队单循环赛（每两队比赛1次），积分分别为7、8、9分，是否可能？说明理由。</div>
-        <div class="answer">可能</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">可能</div>
+        </div>
         
         <div class="question">n队联赛中，积分形成连续自然数时，最高分与最低分的差值是多少？举例说明n=4的情况。</div>
-        <div class="answer">差值为n-1，例如4队：
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">差值为n-1，例如4队：
 可能序列3,4,5,6分（差值6-3=3）
 或0,1,2,3分（差值3-0=3）</div>
+        </div>
         
         <div class="question">4队双循环赛，要求：
 积分形成连续偶数（如4,6,8,10分）
 第二名对最后一名两战全平
 设计合理的胜负关系。</div>
-        <div class="answer">10分队：5胜1平（平第二名），
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">10分队：5胜1平（平第二名），
 8分队：2胜2平2负（平10分和4分队），
 6分队：1胜3平2负（两平8分队），
 4分队：3平3负</div>
+        </div>
     </div>
+    
     <h2>计数与排列组合</h2>
     <div class="section">
         <h3>1. 传球问题</h3>
@@ -353,19 +403,28 @@
         </div>
         
         <div class="question">4人围成一圈，从A开始传球，经过B和C后传到D，有多少种不同的传球顺序？</div>
-        <div class="answer">2种（A→B→C→D 或 A→C→B→D）</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">2种（A→B→C→D 或 A→C→B→D）</div>
+        </div>
         
         <div class="question">5人围成一圈（A、B、C、D、E），从A出发：
 必须经过C
 不能直接传给E
 最后传回A，求路径数。</div>
-        <div class="answer">6种</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">6种</div>
+        </div>
         
         <div class="question">5人传球（A-E），从A出发：
 必须经过B和C（顺序不限）
 D和E不能连续接球
 传5次后到E的路径数？</div>
-        <div class="answer">8种</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">8种</div>
+        </div>
     </div>
     
     <div class="section">
@@ -386,13 +445,46 @@ D和E不能连续接球
         </div>
         
         <div class="question">三个区域排成一行，用红、绿、蓝三色染色，相邻区域颜色不同，有多少种染法？</div>
-        <div class="answer">6种</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">6种</div>
+        </div>
         
         <div class="question">三个区域构成三角形（两两相邻），用三种颜色染色，相邻区域颜色不同，有多少种染法？</div>
-        <div class="answer">6种</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">6种</div>
+        </div>
         
         <div class="question">六个区域构成正六边形（中心+外围五区），用四种颜色染色，相邻区域颜色不同，中心区域必须为红色，有多少种染法？</div>
-        <div class="answer">48种</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">48种</div>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 点击显示答案功能
+            document.body.addEventListener('click', function(e) {
+                const container = e.target.closest('.answer-container');
+                if(container) {
+                    container.classList.toggle('show-answer');
+                }
+            });
+            
+            // 传球动画效果
+            const passingAnimation = document.querySelector('.passing-animation');
+            const passLines = passingAnimation.querySelectorAll('.pass-line');
+            let currentLine = 0;
+            setInterval(() => {
+                passLines[currentLine].style.animation = 'none';
+                setTimeout(() => {
+                    passLines[currentLine].style.animation = 'passLine 2s infinite';
+                }, 10);
+                currentLine = (currentLine + 1) % passLines.length;
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
